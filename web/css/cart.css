@@ -1,0 +1,628 @@
+/* ==========================================================================
+   SmartMart · Bảng đơn hàng (ctp-) + phiếu in
+   Cột phải của màn hình bán hàng, hộp thoại thanh toán và hóa đơn thành công.
+   ========================================================================== */
+
+.ctp {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  /* Đứng yên khi danh mục cuộn: quầy luôn thấy giỏ. */
+  position: sticky;
+  top: 0;
+  max-height: calc(100dvh - var(--topbar-h) - 68px);
+  overflow: hidden;
+}
+
+/* ============================================================
+   Đầu bảng
+   ============================================================ */
+.ctp-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-4) var(--s-4) var(--s-3);
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+
+.ctp-head__text { flex: 1 1 auto; min-width: 0; }
+
+.ctp-title {
+  font-size: var(--fs-md);
+  letter-spacing: -.02em;
+}
+
+.ctp-subtitle {
+  margin-top: 1px;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ctp-count {
+  flex: 0 0 auto;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  background: var(--brand-50);
+  color: var(--brand-700);
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ctp-count[data-empty="true"] {
+  background: var(--surface-3);
+  color: var(--muted);
+}
+
+/* ============================================================
+   Danh sách dòng hàng
+   ============================================================ */
+.ctp-lines {
+  flex: 1 1 auto;
+  min-height: 96px;
+  max-height: 44vh;
+  padding: var(--s-2) var(--s-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+}
+
+.ctp-lines.is-empty {
+  display: block;
+  max-height: none;
+}
+
+.ctp-line {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-2);
+  border-radius: var(--r-md);
+  transition: background-color var(--t-fast) var(--ease-out);
+}
+
+.ctp-line:hover { background: var(--surface-2); }
+
+.ctp-line + .ctp-line { border-top: 1px solid var(--line); border-radius: 0 0 var(--r-md) var(--r-md); }
+
+/* Ảnh thu nhỏ — ảnh hỏng thì lộ nền + biểu tượng phía dưới */
+.ctp-line__thumb {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: var(--surface-3);
+  color: var(--muted-2);
+}
+
+.ctp-line__thumb[data-category="Produce"] { background: color-mix(in srgb, var(--brand-100) 62%, var(--surface-3)); }
+.ctp-line__thumb[data-category="Dairy"] { background: color-mix(in srgb, var(--sky-100) 60%, var(--surface-3)); }
+.ctp-line__thumb[data-category="Snacks"] { background: color-mix(in srgb, var(--amber-100) 52%, var(--surface-3)); }
+.ctp-line__thumb[data-category="Electronics"] { background: color-mix(in srgb, var(--violet-100) 58%, var(--surface-3)); }
+
+.ctp-line__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 3px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+:root[data-theme="dark"] .ctp-line__img { mix-blend-mode: normal; }
+
+.ctp-line__main { flex: 1 1 auto; min-width: 0; }
+
+.ctp-line__name {
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  line-height: var(--lh-snug);
+  color: var(--ink);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.ctp-line__meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 1px;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  flex-wrap: wrap;
+}
+
+.ctp-line__off {
+  padding: 0 5px;
+  border-radius: var(--r-2xs);
+  background: var(--brand-50);
+  color: var(--brand-700);
+  font-weight: 800;
+  font-size: var(--fs-2xs);
+}
+
+.ctp-line__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  margin-top: 6px;
+}
+
+.ctp-line__controls .stepper { padding: 2px; }
+.ctp-line__controls .stepper button { width: 24px; height: 24px; }
+.ctp-line__controls .stepper output { min-width: 26px; font-size: var(--fs-sm); }
+
+.ctp-line__remove {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-left: auto;
+  border: 0;
+  border-radius: var(--r-xs);
+  background: transparent;
+  color: var(--muted-2);
+  transition: background-color var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+}
+
+.ctp-line__remove:hover { background: var(--coral-100); color: var(--coral-600); }
+
+.ctp-line__total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.ctp-line__total strong {
+  font-size: var(--fs-base);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ctp-line__total span {
+  font-size: var(--fs-2xs);
+  color: var(--muted-2);
+  white-space: nowrap;
+}
+
+/* --- Trạng thái rỗng --- */
+.ctp-empty { padding: var(--s-7) var(--s-4); }
+.ctp-empty h3 { margin-top: var(--s-1); }
+.ctp-empty__hint {
+  padding: 5px 10px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  font-size: var(--fs-2xs) !important;
+}
+
+/* ============================================================
+   Chân bảng — tổng tiền
+   ============================================================ */
+.ctp-foot {
+  flex: 0 0 auto;
+  padding: var(--s-3) var(--s-4) var(--s-4);
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+}
+
+.ctp-caution:empty { display: none; }
+
+.ctp-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: var(--s-2);
+  padding: 7px 10px;
+  border-radius: var(--r-sm);
+  background: var(--amber-100);
+  color: var(--amber-600);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  line-height: var(--lh-snug);
+}
+
+.ctp-warning svg { flex: 0 0 auto; margin-top: 1px; }
+
+.ctp-summary { display: flex; flex-direction: column; gap: 5px; }
+
+.ctp-summary__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+  font-size: var(--fs-sm);
+}
+
+.ctp-summary__label { color: var(--muted); }
+
+.ctp-summary__value {
+  font-weight: 700;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.ctp-summary__row[data-tone="brand"] .ctp-summary__value { color: var(--brand-600); }
+.ctp-summary__row[data-tone="brand"] .ctp-summary__label { color: var(--brand-600); }
+
+.ctp-summary__row[data-tone="total"] {
+  margin-top: var(--s-2);
+  padding-top: var(--s-2);
+  border-top: 1px dashed var(--line-strong);
+  font-size: var(--fs-base);
+}
+
+.ctp-summary__row[data-tone="total"] .ctp-summary__label {
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  align-self: center;
+}
+
+.ctp-summary__row[data-tone="total"] .ctp-summary__value {
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  letter-spacing: -.04em;
+  color: var(--ink);
+}
+
+.ctp-checkout {
+  margin-top: var(--s-3);
+  height: 50px;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  gap: var(--s-2);
+}
+
+.ctp-checkout svg { transition: transform var(--t-base) var(--ease-out); }
+.ctp-checkout:hover:not(:disabled) svg { transform: translateX(3px); }
+
+.ctp-shortcut {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--s-2);
+  color: var(--muted-2);
+  font-size: var(--fs-2xs);
+}
+
+/* ============================================================
+   Hộp thoại chọn phương thức thanh toán
+   ============================================================ */
+.ctp-pay { display: flex; flex-direction: column; gap: var(--s-4); }
+
+.ctp-pay__amount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--s-4);
+  border-radius: var(--r-lg);
+  background: linear-gradient(150deg, var(--brand-50), var(--surface-2));
+  border: 1px solid var(--brand-100);
+  text-align: center;
+}
+
+.ctp-pay__amount-label {
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--brand-600);
+}
+
+.ctp-pay__amount-value {
+  font-size: var(--fs-3xl);
+  font-weight: 800;
+  letter-spacing: -.04em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+}
+
+.ctp-pay__amount-note {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.ctp-pay__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+}
+
+.ctp-pay__option {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  width: 100%;
+  padding: var(--s-3) var(--s-4);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  text-align: left;
+  transition: border-color var(--t-fast) var(--ease-out),
+              background-color var(--t-fast) var(--ease-out),
+              box-shadow var(--t-fast) var(--ease-out),
+              transform var(--t-fast) var(--ease-out);
+}
+
+.ctp-pay__option:hover {
+  border-color: var(--brand-300);
+  background: var(--surface-2);
+}
+
+.ctp-pay__option:active { transform: scale(.99); }
+
+.ctp-pay__option[aria-checked="true"] {
+  border-color: var(--brand-500);
+  background: var(--brand-50);
+  box-shadow: 0 0 0 3px var(--brand-50);
+}
+
+.ctp-pay__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: var(--r-md);
+  background: var(--surface-3);
+  color: var(--ink-soft);
+  transition: background-color var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+}
+
+.ctp-pay__option[aria-checked="true"] .ctp-pay__icon {
+  background: var(--brand-600);
+  color: var(--on-brand);
+}
+
+.ctp-pay__text { flex: 1 1 auto; min-width: 0; }
+
+.ctp-pay__text strong {
+  display: block;
+  font-size: var(--fs-base);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ctp-pay__text span {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.ctp-pay__tick {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  border: 1.5px solid var(--line-strong);
+  border-radius: 50%;
+  color: transparent;
+  transition: background-color var(--t-fast) var(--ease-out),
+              border-color var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out);
+}
+
+.ctp-pay__option[aria-checked="true"] .ctp-pay__tick {
+  background: var(--brand-600);
+  border-color: var(--brand-600);
+  color: var(--on-brand);
+}
+
+/* ============================================================
+   Hóa đơn thành công
+   ============================================================ */
+.ctp-receipt { display: flex; flex-direction: column; gap: var(--s-4); }
+
+.ctp-receipt__hero {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding: var(--s-4);
+  border-radius: var(--r-lg);
+  background: linear-gradient(140deg, var(--brand-50), var(--surface-2));
+  border: 1px solid var(--brand-100);
+  animation: sm-pop var(--t-slow) var(--ease-spring) both;
+}
+
+.ctp-receipt__check {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: linear-gradient(150deg, var(--brand-400), var(--brand-600));
+  color: var(--on-brand);
+  box-shadow: var(--shadow-brand);
+}
+
+.ctp-receipt__check svg { width: 26px; height: 26px; }
+
+.ctp-receipt__hero-text { min-width: 0; flex: 1 1 auto; }
+
+.ctp-receipt__eyebrow {
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--brand-600);
+}
+
+.ctp-receipt__order {
+  margin-top: 1px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-base);
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--ink);
+}
+
+.ctp-receipt__total {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  margin-top: var(--s-1);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+.ctp-receipt__total strong {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  letter-spacing: -.035em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.ctp-receipt__pay {
+  margin-top: 2px;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+/* Tờ phiếu: giới hạn đúng bề ngang 44 ký tự của phiếu in (giống cuộn giấy
+   in nhiệt) và canh giữa. Để tràn hết hộp thoại thì chữ chỉ chiếm một nửa
+   bên trái, trông như trang giấy bị bỏ trống nửa tờ. */
+.ctp-receipt__paper {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+  padding: var(--s-5) var(--s-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: var(--surface);
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  line-height: 1.6;
+  white-space: pre;
+  overflow-x: auto;
+  tab-size: 2;
+  /* Hai đường kẻ dọc mô phỏng mép cuộn giấy in nhiệt. */
+  box-shadow: inset 2px 0 0 var(--line), inset -2px 0 0 var(--line), var(--shadow-xs);
+}
+
+/* ============================================================
+   Điểm ngắt màn hình
+   ============================================================ */
+@media (max-width: 1080px) {
+  /* Giỏ xuống dưới danh mục: bỏ dính và bỏ giới hạn chiều cao. */
+  .ctp {
+    position: static;
+    max-height: none;
+  }
+  .ctp-lines { max-height: none; }
+}
+
+@media (max-width: 720px) {
+  .ctp-head { padding: var(--s-3); }
+  .ctp-lines { padding: var(--s-1) var(--s-2); }
+  .ctp-line { gap: var(--s-2); }
+  .ctp-line__thumb { width: 36px; height: 36px; }
+  .ctp-foot { padding: var(--s-3); }
+  .ctp-summary__row[data-tone="total"] .ctp-summary__value { font-size: var(--fs-xl); }
+  .ctp-receipt__hero { flex-direction: column; text-align: center; gap: var(--s-3); }
+  .ctp-receipt__total { justify-content: center; }
+  .ctp-pay__amount-value { font-size: var(--fs-2xl); }
+}
+
+/* ============================================================
+   IN HÓA ĐƠN — chỉ in tờ phiếu, bỏ mọi thứ khác
+   Bật bằng document.body[data-print="receipt"] (cart-panel.js đặt cờ này
+   quanh lệnh window.print()).
+   ============================================================ */
+@media print {
+  body[data-print="receipt"] {
+    background: var(--surface);
+  }
+
+  body[data-print="receipt"] > #app,
+  body[data-print="receipt"] .statusbar,
+  body[data-print="receipt"] .toast-root,
+  body[data-print="receipt"] .topbar {
+    display: none !important;
+  }
+
+  body[data-print="receipt"] .modal-root {
+    position: static;
+    display: block;
+  }
+
+  /* Chỉ giữ lớp phủ đang được đánh dấu là đích in. */
+  body[data-print="receipt"] .modal-backdrop { display: none !important; }
+  body[data-print="receipt"] .modal-backdrop.ctp-print-target {
+    display: block !important;
+    position: static;
+    padding: 0;
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    animation: none;
+  }
+
+  body[data-print="receipt"] .ctp-print-target .modal {
+    width: 100%;
+    max-width: 480px;
+    max-height: none;
+    border: 0;
+    box-shadow: none;
+    animation: none;
+    margin: 0 auto;
+  }
+
+  body[data-print="receipt"] .ctp-print-target .modal__head,
+  body[data-print="receipt"] .ctp-print-target .modal__foot,
+  body[data-print="receipt"] .ctp-print-target .modal__close {
+    display: none !important;
+  }
+
+  body[data-print="receipt"] .ctp-print-target .modal__body {
+    padding: 0;
+    overflow: visible;
+  }
+
+  body[data-print="receipt"] .ctp-receipt__paper {
+    max-width: none;
+    border: 0;
+    box-shadow: none;
+    background: var(--surface);
+    padding: 0;
+    font-size: 11px;
+    color: var(--ink);
+    overflow: visible;
+  }
+
+  body[data-print="receipt"] .ctp-receipt__hero {
+    background: none;
+    border: 0;
+    padding: 0 0 8px;
+    animation: none;
+  }
+
+  @page { margin: 12mm; }
+}
