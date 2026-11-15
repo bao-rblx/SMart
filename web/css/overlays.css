@@ -1,0 +1,203 @@
+/* ==========================================================================
+   SmartMart · Lớp phủ — hộp thoại, thông báo nổi
+   ========================================================================== */
+
+/* ============================================================
+   Hộp thoại
+   ============================================================ */
+.modal-root { position: relative; z-index: var(--z-modal); }
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--s-6);
+  background: rgba(11, 26, 21, .44);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: var(--z-modal);
+  animation: sm-fade-in var(--t-base) var(--ease-out) both;
+  overflow: auto;
+}
+
+.modal-backdrop--out { animation: sm-fade-in var(--t-fast) var(--ease-out) reverse both; }
+
+.modal {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 560px);
+  max-height: min(88vh, 900px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+  animation: sm-pop var(--t-slow) var(--ease-spring) both;
+}
+
+.modal--sm { width: min(100%, 428px); }
+.modal--md { width: min(100%, 560px); }
+.modal--lg { width: min(100%, 760px); }
+.modal--xl { width: min(100%, 1020px); }
+
+.modal--danger .modal__icon {
+  background: var(--coral-100);
+  color: var(--coral-600);
+}
+
+.modal__head {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-5) var(--s-5) var(--s-4);
+  border-bottom: 1px solid var(--line);
+  flex: 0 0 auto;
+}
+
+.modal__icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: var(--r-md);
+  background: var(--brand-50);
+  color: var(--brand-600);
+}
+
+.modal__title {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+
+.modal__close { margin-left: auto; flex: 0 0 auto; }
+
+.modal__body {
+  padding: var(--s-5);
+  overflow: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.modal__foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--s-2);
+  padding: var(--s-4) var(--s-5);
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+  flex: 0 0 auto;
+}
+
+.modal__message {
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--ink-soft);
+  white-space: pre-line;
+}
+
+body[data-modal="open"] { overflow: hidden; }
+
+/* ============================================================
+   Thông báo nổi
+   ============================================================ */
+.toast-root {
+  position: fixed;
+  right: var(--s-5);
+  bottom: var(--s-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2);
+  width: min(370px, calc(100vw - 32px));
+  z-index: var(--z-toast);
+  pointer-events: none;
+}
+
+.toast {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-3) var(--s-3) var(--s-4);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--muted);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  animation: sm-slide-right var(--t-base) var(--ease-out) both;
+}
+
+.toast--out { animation: sm-fade-in var(--t-fast) var(--ease-out) reverse both; }
+
+.toast--success { border-left-color: var(--brand-500); }
+.toast--error { border-left-color: var(--coral-500); }
+.toast--warning { border-left-color: var(--amber-500); }
+.toast--info { border-left-color: var(--sky-500); }
+
+.toast__icon {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  border-radius: var(--r-xs);
+}
+
+.toast--success .toast__icon { background: var(--brand-100); color: var(--brand-700); }
+.toast--error .toast__icon { background: var(--coral-100); color: var(--coral-600); }
+.toast--warning .toast__icon { background: var(--amber-100); color: var(--amber-600); }
+.toast--info .toast__icon { background: var(--sky-100); color: var(--sky-500); }
+
+.toast__body { flex: 1 1 auto; min-width: 0; }
+
+.toast__message {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--ink);
+  line-height: var(--lh-snug);
+}
+
+.toast__detail {
+  margin-top: 2px;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  line-height: var(--lh-snug);
+}
+
+.toast__action {
+  flex: 0 0 auto;
+  align-self: center;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  background: var(--surface-2);
+  color: var(--brand-700);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  transition: background-color var(--t-fast) var(--ease-out);
+}
+
+.toast__action:hover { background: var(--brand-50); }
+
+.toast__close {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: var(--r-xs);
+  background: transparent;
+  color: var(--muted-2);
+  transition: background-color var(--t-fast) var(--ease-out), color var(--t-fast) var(--ease-out);
+}
+
+.toast__close:hover { background: var(--surface-3); color: var(--ink); }
