@@ -1,0 +1,175 @@
+/* ==========================================================================
+   SmartMart · Nhân sự
+   Tiền tố .us- ; mọi màu lấy từ tokens.css.
+   ========================================================================== */
+
+/* ============================================================
+   Bảng tài khoản
+   ============================================================ */
+.us-card {
+  margin-bottom: var(--s-6);
+  overflow: hidden;
+}
+
+.us-table-wrap {
+  border: 0;
+  border-radius: 0;
+  max-width: 100%;
+}
+
+.us-table {
+  /* Bảng ba cột nên chỉ cần đủ rộng cho phần "Quyền truy cập"; hẹp hơn thì cuộn. */
+  min-width: 640px;
+}
+
+.us-table tbody tr {
+  cursor: pointer;
+}
+
+.us-table tbody tr:focus-visible {
+  outline: 2.5px solid var(--brand-500);
+  outline-offset: -3px;
+}
+
+/* --- Ô người dùng: avatar chữ cái đầu --- */
+.us-person {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-width: 0;
+}
+
+.us-avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: var(--r-pill);
+  background: linear-gradient(140deg, var(--brand-400), var(--brand-600));
+  color: var(--on-brand);
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  letter-spacing: .02em;
+  box-shadow: var(--shadow-xs);
+  text-transform: uppercase;
+}
+
+.us-person__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.us-person__name {
+  font-weight: 700;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.us-person__sub {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+/* --- Danh sách màn hình được vào --- */
+.us-screens {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.us-screen {
+  white-space: nowrap;
+}
+
+.us-hint {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* Thanh hành động của dòng đang chọn */
+.us-selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-2) var(--s-4);
+  background: var(--brand-50);
+  border-bottom: 1px solid var(--brand-100);
+  flex-wrap: wrap;
+  animation: sm-fade-down var(--t-base) var(--ease-out) both;
+}
+
+.us-selection[hidden] {
+  display: none;
+}
+
+.us-selection__label {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--brand-700);
+  min-width: 0;
+}
+
+.us-selection__self {
+  background: var(--surface);
+}
+
+.us-selection__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   Biểu mẫu thêm nhân sự và gợi ý quyền
+   ============================================================ */
+.us-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.us-role-hint {
+  margin-top: calc(var(--s-2) * -1);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  line-height: var(--lh-snug);
+}
+
+.us-form .field__error {
+  display: flex;
+}
+
+/* ============================================================
+   Điểm ngắt màn hình
+   ============================================================ */
+@media (max-width: 640px) {
+  .us-selection {
+    align-items: flex-start;
+  }
+
+  .us-selection__actions {
+    width: 100%;
+  }
+
+  .us-selection__actions .btn {
+    flex: 1 1 auto;
+  }
+
+  .us-avatar {
+    width: 30px;
+    height: 30px;
+  }
+}
