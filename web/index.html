@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="vi" data-theme="light" data-density="comfortable" data-motion="full">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#10312a" />
+  <meta name="description" content="SmartMart — ứng dụng quản lý bán lẻ: bán hàng, kho hàng, doanh thu và nhân sự trong một giao diện duy nhất." />
+  <title>SmartMart · Gọn việc bán. Trọn niềm vui.</title>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%231b7559'/%3E%3Cpath d='M10 21.5c1.5 1.4 3.4 2.1 5.6 2.1 3.4 0 5.6-1.7 5.6-4.3 0-2.4-1.6-3.6-5-4.3-2.4-.5-3.2-1-3.2-2 0-1 1-1.7 2.6-1.7 1.6 0 3 .6 4.2 1.6M16 6v20' stroke='%23fff' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/boot.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/overlays.css" />
+  <link rel="stylesheet" href="css/app-extras.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/catalog.css" />
+  <link rel="stylesheet" href="css/cart.css" />
+  <link rel="stylesheet" href="css/checkout.css" />
+  <link rel="stylesheet" href="css/inventory.css" />
+  <link rel="stylesheet" href="css/reports.css" />
+  <link rel="stylesheet" href="css/users.css" />
+</head>
+<body>
+  <div id="app" aria-live="polite">
+    <div class="boot" id="boot">
+      <div class="boot__mark" aria-hidden="true"></div>
+      <p class="boot__text">Đang mở cửa hàng…</p>
+    </div>
+  </div>
+  <div id="toast-root" class="toast-root" role="status" aria-live="polite" aria-atomic="false"></div>
+  <div id="modal-root" class="modal-root"></div>
+
+  <noscript>
+    <div class="noscript">
+      <h1>SmartMart cần JavaScript</h1>
+      <p>Bật JavaScript trong trình duyệt rồi tải lại trang để dùng ứng dụng.</p>
+    </div>
+  </noscript>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

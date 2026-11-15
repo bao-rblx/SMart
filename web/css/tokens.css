@@ -1,0 +1,205 @@
+/* ==========================================================================
+   SmartMart · Design Tokens
+   Nguồn sự thật duy nhất cho màu sắc, khoảng cách, bo góc, đổ bóng và chuyển động.
+   Mọi file CSS khác phải dùng biến ở đây, không viết mã màu trực tiếp.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* --- Brand --- */
+  --brand-900: #0d2a22;
+  --brand-800: #123a2d;
+  --brand-700: #16503e;
+  --brand-600: #1b7559;
+  --brand-500: #219a72;
+  --brand-400: #33b98b;
+  --brand-300: #6fd3ae;
+  --brand-200: #a7e6cd;
+  --brand-100: #d5f4e6;
+  --brand-50:  #ecfaf3;
+
+  /* --- Accent bổ trợ --- */
+  --lime-500: #b6e04a;
+  --lime-300: #d8f08b;
+  --amber-600: #b7761f;
+  --amber-500: #e09b32;
+  --amber-100: #fdf0d7;
+  --coral-600: #c2453b;
+  --coral-500: #e35a4d;
+  --coral-100: #fde5e2;
+  --violet-500: #6f5bd4;
+  --violet-100: #ece8fd;
+  --sky-500: #3d8fd4;
+  --sky-100: #e4f0fb;
+
+  /* --- Bề mặt --- */
+  --bg: #f6f6f0;
+  --bg-tint: #f0f2e9;
+  --surface: #ffffff;
+  --surface-2: #fbfbf7;
+  --surface-3: #f2f3ec;
+  --surface-raised: #ffffff;
+  --rail: #10312a;
+  --rail-2: #164035;
+
+  /* --- Chữ --- */
+  --ink: #17271f;
+  --ink-soft: #33453c;
+  --muted: #718378;
+  --muted-2: #96a49b;
+  --on-brand: #ffffff;
+  --on-rail: #dbe8dd;
+
+  /* --- Đường viền --- */
+  --line: #e4e8dd;
+  --line-strong: #cfd7c9;
+  --line-rail: rgba(255, 255, 255, .1);
+
+  /* --- Bóng đổ --- */
+  --shadow-xs: 0 1px 2px rgba(19, 41, 32, .05);
+  --shadow-sm: 0 1px 3px rgba(19, 41, 32, .07), 0 1px 2px rgba(19, 41, 32, .04);
+  --shadow-md: 0 4px 14px rgba(19, 41, 32, .07), 0 1px 3px rgba(19, 41, 32, .05);
+  --shadow-lg: 0 14px 38px rgba(19, 41, 32, .11), 0 4px 12px rgba(19, 41, 32, .06);
+  --shadow-xl: 0 26px 64px rgba(19, 41, 32, .18), 0 8px 20px rgba(19, 41, 32, .08);
+  --shadow-brand: 0 8px 22px rgba(27, 117, 89, .28);
+
+  /* --- Bo góc --- */
+  --r-2xs: 4px;
+  --r-xs: 6px;
+  --r-sm: 8px;
+  --r-md: 11px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+  --r-2xl: 28px;
+  --r-pill: 999px;
+
+  /* --- Khoảng cách --- */
+  --s-1: 4px;   --s-2: 8px;   --s-3: 12px;  --s-4: 16px;
+  --s-5: 20px;  --s-6: 24px;  --s-7: 32px;  --s-8: 40px;
+  --s-9: 48px;  --s-10: 64px; --s-11: 80px;
+
+  /* --- Chữ --- */
+  --font-sans: "Segoe UI Variable Display", "Segoe UI Variable Text", "Segoe UI", Inter,
+    -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-mono: "Cascadia Code", "JetBrains Mono", "SF Mono", Consolas, "Courier New", monospace;
+
+  --fs-2xs: 10.5px;
+  --fs-xs: 11.5px;
+  --fs-sm: 12.5px;
+  --fs-base: 13.5px;
+  --fs-md: 15px;
+  --fs-lg: 17px;
+  --fs-xl: 21px;
+  --fs-2xl: 26px;
+  --fs-3xl: 32px;
+  --fs-4xl: 42px;
+  --fs-5xl: 56px;
+
+  --lh-tight: 1.2;
+  --lh-snug: 1.4;
+  --lh-normal: 1.6;
+
+  /* --- Chuyển động --- */
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --t-fast: 120ms;
+  --t-base: 200ms;
+  --t-slow: 340ms;
+  --t-slower: 620ms;
+
+  /* --- Bố cục --- */
+  --rail-w: 236px;
+  --topbar-h: 72px;
+  --content-max: 1560px;
+  --z-rail: 40;
+  --z-topbar: 50;
+  --z-drawer: 70;
+  --z-modal: 90;
+  --z-toast: 110;
+
+  /* --- Lớp phủ (glassmorphism) --- */
+  --glass-bg: rgba(255, 255, 255, .72);
+  --glass-border: rgba(255, 255, 255, .6);
+  --glass-blur: 14px;
+}
+
+/* ============================================================
+   Chế độ tối — chỉ ghi đè giá trị, giữ nguyên tên biến
+   ============================================================ */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0c1a16;
+  --bg-tint: #0a1613;
+  --surface: #132420;
+  --surface-2: #162923;
+  --surface-3: #1b3029;
+  --surface-raised: #182d26;
+  --rail: #08130f;
+  --rail-2: #0e211b;
+
+  --ink: #eaf3ec;
+  --ink-soft: #c9dad0;
+  --muted: #8ba497;
+  --muted-2: #6b8177;
+  --on-brand: #04160f;
+  --on-rail: #c4d8ca;
+
+  --line: #23392f;
+  --line-strong: #2e4a3d;
+  --line-rail: rgba(255, 255, 255, .08);
+
+  --brand-50: #10281f;
+  --brand-100: #12352a;
+  --brand-200: #17493a;
+  --brand-300: #2e7d5f;
+
+  --amber-100: #33260f;
+  --coral-100: #3a1c19;
+  --violet-100: #241f3d;
+  --sky-100: #14283a;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, .5);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, .55);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, .5);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, .58);
+  --shadow-xl: 0 28px 70px rgba(0, 0, 0, .68);
+  --shadow-brand: 0 8px 24px rgba(51, 185, 139, .22);
+
+  --glass-bg: rgba(19, 36, 32, .76);
+  --glass-border: rgba(255, 255, 255, .07);
+
+  --brand-600: #2fa87c;
+  --brand-500: #34b98a;
+}
+
+/* Mật độ hiển thị — người dùng chọn trong Cài đặt */
+:root[data-density="compact"] {
+  --rail-w: 212px;
+  --topbar-h: 64px;
+  --fs-base: 13px;
+  --fs-md: 14px;
+  --s-6: 20px;
+  --s-7: 26px;
+}
+
+/* Giảm chuyển động theo cài đặt hệ điều hành hoặc lựa chọn người dùng */
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
+  animation-duration: .001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .001ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
