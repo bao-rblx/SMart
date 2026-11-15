@@ -1,0 +1,200 @@
+/* ==========================================================================
+   SmartMart · Base — reset, kiểu chữ, phần tử gốc
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html, body { height: 100%; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-base);
+  line-height: var(--lh-normal);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+  transition: background-color var(--t-base) var(--ease-out), color var(--t-base) var(--ease-out);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: var(--lh-tight);
+  letter-spacing: -.018em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--fs-3xl); }
+h2 { font-size: var(--fs-2xl); }
+h3 { font-size: var(--fs-lg); }
+h4 { font-size: var(--fs-md); }
+
+p { text-wrap: pretty; }
+
+a {
+  color: var(--brand-600);
+  text-decoration: none;
+  transition: color var(--t-fast) var(--ease-out);
+}
+a:hover { color: var(--brand-500); }
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button { cursor: pointer; }
+
+button:disabled, input:disabled, select:disabled, textarea:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+}
+
+ul, ol { list-style: none; padding: 0; }
+
+table { border-collapse: collapse; width: 100%; }
+
+/* --- Tiêu điểm bàn phím: luôn nhìn thấy rõ --- */
+:focus { outline: none; }
+
+:focus-visible {
+  outline: 2.5px solid var(--brand-500);
+  outline-offset: 2px;
+  border-radius: var(--r-xs);
+}
+
+/* --- Vùng cuộn gọn gàng --- */
+.scroll-area {
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+  overscroll-behavior: contain;
+}
+
+.scroll-area::-webkit-scrollbar { width: 10px; height: 10px; }
+.scroll-area::-webkit-scrollbar-track { background: transparent; }
+.scroll-area::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: var(--r-pill);
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+.scroll-area::-webkit-scrollbar-thumb:hover { background-color: var(--muted-2); background-clip: content-box; }
+
+/* --- Tiện ích chung --- */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.is-hidden { display: none !important; }
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stack { display: flex; flex-direction: column; }
+.row { display: flex; align-items: center; }
+.row-between { display: flex; align-items: center; justify-content: space-between; }
+.gap-1 { gap: var(--s-1); }
+.gap-2 { gap: var(--s-2); }
+.gap-3 { gap: var(--s-3); }
+.gap-4 { gap: var(--s-4); }
+.gap-5 { gap: var(--s-5); }
+.gap-6 { gap: var(--s-6); }
+.grow { flex: 1 1 auto; min-width: 0; }
+
+.num { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--font-mono); }
+
+.eyebrow {
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.text-muted { color: var(--muted); }
+.text-brand { color: var(--brand-600); }
+.text-amber { color: var(--amber-600); }
+.text-coral { color: var(--coral-600); }
+
+/* --- Hoạt ảnh dùng chung --- */
+@keyframes sm-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes sm-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes sm-fade-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes sm-pop {
+  0%   { opacity: 0; transform: scale(.94); }
+  60%  { opacity: 1; transform: scale(1.012); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes sm-slide-right {
+  from { transform: translateX(28px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+
+@keyframes sm-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes sm-shimmer {
+  from { background-position: -420px 0; }
+  to   { background-position: 420px 0; }
+}
+
+@keyframes sm-pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(226, 90, 77, .45); }
+  70%  { box-shadow: 0 0 0 9px rgba(226, 90, 77, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(226, 90, 77, 0); }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-3) 25%, var(--surface-2) 45%, var(--surface-3) 65%);
+  background-size: 840px 100%;
+  animation: sm-shimmer 1.35s linear infinite;
+  border-radius: var(--r-sm);
+}
+
+/* --- Thanh chọn văn bản đồng bộ thương hiệu --- */
+::selection {
+  background: var(--brand-200);
+  color: var(--brand-900);
+}

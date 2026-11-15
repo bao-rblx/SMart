@@ -1,0 +1,42 @@
+
+/* Màn hình chờ khi ứng dụng còn đang nạp */
+.boot {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--s-4);
+  background: var(--bg);
+  z-index: 1;
+}
+
+.boot__mark {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--r-xl);
+  background: linear-gradient(140deg, var(--brand-400), var(--brand-600));
+  box-shadow: var(--shadow-brand);
+  animation: sm-pop .6s var(--ease-spring) both, sm-pulse 1.8s ease-in-out .6s infinite;
+}
+
+.boot__text {
+  font-size: var(--fs-base);
+  color: var(--muted);
+}
+
+@keyframes sm-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+.noscript {
+  display: grid;
+  place-content: center;
+  gap: var(--s-3);
+  height: 100vh;
+  padding: var(--s-8);
+  text-align: center;
+  background: var(--bg);
+  color: var(--ink);
+}

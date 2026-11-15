@@ -1,0 +1,69 @@
+# ============================================================
+# SmartMart · Những gì không đưa lên GitHub
+# ============================================================
+
+# --- .NET / Visual Studio ---
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+project.lock.json
+project.fragment.lock.json
+artifacts/bin/
+artifacts/obj/
+
+# --- Node / JavaScript ---
+node_modules/
+npm-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.eslintcache
+.parcel-cache
+dist/
+build/
+
+# --- Dữ liệu cửa hàng (không bao giờ commit dữ liệu thật) ---
+*.db
+*.db-shm
+*.db-wal
+*.bak
+*.sqlite
+*.sqlite3
+data/local/
+
+# --- Hệ điều hành ---
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# --- Trình soạn thảo ---
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# --- Tạm thời ---
+*.log
+*.tmp
+*.temp
+.cache/
+coverage/
+playwright-report/
+test-results/
+
+# --- Ảnh chụp màn hình tạm của quá trình kiểm tra ---
+web/.screenshots/
