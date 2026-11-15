@@ -1,0 +1,364 @@
+/* ==========================================================================
+   SmartMart · Danh mục sản phẩm (ct-)
+   Thẻ sản phẩm + lưới thẻ. Dùng chung cho màn hình bán hàng.
+   ========================================================================== */
+
+/* ============================================================
+   Thẻ sản phẩm
+   ============================================================ */
+.ct-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--s-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-xs);
+  text-align: left;
+  transition: transform var(--t-base) var(--ease-out),
+              box-shadow var(--t-base) var(--ease-out),
+              border-color var(--t-base) var(--ease-out);
+}
+
+.ct-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--brand-300);
+  box-shadow: var(--shadow-md);
+}
+
+.ct-card:focus-within {
+  border-color: var(--brand-400);
+  box-shadow: 0 0 0 3px var(--brand-50), var(--shadow-md);
+}
+
+.ct-card[data-state="expired"],
+.ct-card[data-state="soldout"] {
+  opacity: .92;
+}
+
+.ct-card[data-state="expired"]:hover,
+.ct-card[data-state="soldout"]:hover {
+  transform: none;
+  border-color: var(--line);
+  box-shadow: var(--shadow-xs);
+}
+
+/* --- Khung ảnh --- */
+.ct-card__media {
+  position: relative;
+  display: grid;
+  /* Hàng/cột 100% khoá chiều cao khung theo aspect-ratio. Nếu để auto, ảnh
+     đặt height:100% sẽ rơi về chiều cao theo tỉ lệ ảnh gốc và tràn khung. */
+  grid-template-rows: 100%;
+  grid-template-columns: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  background: var(--surface-3);
+  isolation: isolate;
+}
+
+/* Ảnh và biểu tượng thay thế chồng lên nhau trong cùng một ô lưới. */
+.ct-card__media > * { grid-area: 1 / 1; }
+
+/* Nền nhạt phân biệt nhóm hàng — mắt quét nhanh được khu vực kệ hàng. */
+.ct-card[data-category="Produce"] .ct-card__media { background: color-mix(in srgb, var(--brand-100) 62%, var(--surface-3)); }
+.ct-card[data-category="Dairy"] .ct-card__media { background: color-mix(in srgb, var(--sky-100) 60%, var(--surface-3)); }
+.ct-card[data-category="Beverages"] .ct-card__media { background: color-mix(in srgb, var(--sky-100) 44%, var(--surface-3)); }
+.ct-card[data-category="Snacks"] .ct-card__media { background: color-mix(in srgb, var(--amber-100) 52%, var(--surface-3)); }
+.ct-card[data-category="Electronics"] .ct-card__media { background: color-mix(in srgb, var(--violet-100) 58%, var(--surface-3)); }
+.ct-card[data-category="Household"] .ct-card__media { background: color-mix(in srgb, var(--lime-300) 30%, var(--surface-3)); }
+.ct-card[data-category="PersonalCare"] .ct-card__media { background: color-mix(in srgb, var(--coral-100) 46%, var(--surface-3)); }
+
+.ct-card__img {
+  /* Định vị tuyệt đối: khung ảnh là hệ quy chiếu duy nhất, ảnh không bao giờ
+     tự kéo giãn hàng lưới hay đè lên phần tên/giá bên dưới. Với <img>, phải
+     ghi rõ width/height dạng calc — để auto thì trình duyệt lấy kích thước nội
+     tại của ảnh và bỏ qua offset phải, ảnh lại tràn khung lần nữa. */
+  position: absolute;
+  inset: var(--s-2);
+  width: calc(100% - var(--s-2) * 2);
+  height: calc(100% - var(--s-2) * 2);
+  padding: 0;
+  object-fit: contain;
+  /* Ảnh sản phẩm chụp trên nền trắng: hoà nền với màu nhạt của nhóm hàng thay
+     vì để lộ một khung trắng chỏi giữa thẻ. */
+  mix-blend-mode: multiply;
+  transition: transform var(--t-slow) var(--ease-out);
+}
+
+.ct-card:hover .ct-card__img { transform: scale(1.05); }
+
+/* Chế độ tối: nền nhạt chuyển thành tối nên phải tắt hoà trộn, ảnh giữ nguyên
+   độ sáng và đóng vai trò "ô ảnh" trên thẻ. */
+:root[data-theme="dark"] .ct-card__img {
+  mix-blend-mode: normal;
+  border-radius: calc(var(--r-md) - 2px);
+}
+
+.ct-card__fallback {
+  display: none;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: var(--muted-2);
+}
+
+.ct-card__fallback.is-shown { display: grid; }
+
+/* --- Huy hiệu --- */
+.ct-card__badges {
+  position: absolute;
+  inset: var(--s-2) auto auto var(--s-2);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  pointer-events: none;
+}
+
+.ct-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 21px;
+  padding: 0 8px;
+  border-radius: var(--r-pill);
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+  letter-spacing: .01em;
+  line-height: 1;
+  box-shadow: var(--shadow-xs);
+}
+
+.ct-badge--sale {
+  background: var(--brand-600);
+  color: var(--on-brand);
+}
+
+.ct-badge--expiry {
+  background: var(--amber-500);
+  color: var(--on-brand);
+}
+
+/* --- Lớp mờ khi ngừng bán --- */
+.ct-card__veil {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--surface) 62%, transparent);
+  backdrop-filter: grayscale(1) blur(1.5px);
+  -webkit-backdrop-filter: grayscale(1) blur(1.5px);
+  pointer-events: none;
+}
+
+.ct-card__veil-label {
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: var(--surface);
+  font-size: var(--fs-xs);
+  font-weight: 800;
+  letter-spacing: .03em;
+}
+
+/* --- Thân thẻ --- */
+.ct-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1 1 auto;
+  padding: var(--s-3) 6px 6px;
+  min-width: 0;
+}
+
+.ct-card__name {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-height: calc(var(--fs-base) * var(--lh-tight) * 2);
+  font-size: var(--fs-base);
+  font-weight: 650;
+  line-height: var(--lh-tight);
+  letter-spacing: -.012em;
+  color: var(--ink);
+}
+
+.ct-card__meta {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ct-card__prices {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+  margin-top: auto;
+  /* Chừa chỗ cho nút "+" tròn ở góc dưới phải — 44px nút + 12px lề + 8px đệm. */
+  padding-right: 64px;
+  padding-top: var(--s-1);
+}
+
+.ct-card__price {
+  font-size: var(--fs-md);
+  font-weight: 800;
+  letter-spacing: -.025em;
+  color: var(--brand-700);
+  font-variant-numeric: tabular-nums;
+}
+
+.ct-card__price-was {
+  font-size: var(--fs-xs);
+  color: var(--muted-2);
+  text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
+}
+
+.ct-card__note {
+  padding-right: 52px;
+  font-size: var(--fs-2xs);
+  font-weight: 650;
+  color: var(--muted);
+}
+
+.ct-card__note[data-state="low"] { color: var(--amber-600); }
+.ct-card__note[data-state="expired"],
+.ct-card__note[data-state="soldout"] { color: var(--coral-600); }
+
+/* --- Nút thêm nhanh --- */
+.ct-card__add {
+  position: absolute;
+  right: var(--s-3);
+  bottom: var(--s-3);
+  display: grid;
+  place-items: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 6px;
+  border: 1px solid transparent;
+  border-radius: var(--r-pill);
+  background: linear-gradient(180deg, var(--brand-500), var(--brand-600));
+  color: var(--on-brand);
+  box-shadow: var(--shadow-brand);
+  transition: transform var(--t-fast) var(--ease-spring),
+              filter var(--t-fast) var(--ease-out),
+              box-shadow var(--t-fast) var(--ease-out);
+}
+
+.ct-card__add:hover:not(:disabled) { filter: brightness(1.07); transform: scale(1.07); }
+.ct-card__add:active:not(:disabled) { transform: scale(.94); }
+.ct-card__add svg { width: 18px; height: 18px; }
+
+.ct-card__add.is-selected {
+  min-width: 44px;
+  background: var(--brand-50);
+  border-color: var(--brand-200);
+  color: var(--brand-700);
+  box-shadow: var(--shadow-xs);
+}
+
+.ct-card__qty {
+  font-size: var(--fs-sm);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.ct-card__add:disabled {
+  background: var(--surface-3);
+  border-color: var(--line);
+  color: var(--muted-2);
+  box-shadow: none;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+/* --- Lớp phủ bấm cả thẻ --- */
+.ct-card__overlay {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.ct-card__overlay:focus-visible {
+  outline: 2.5px solid var(--brand-500);
+  outline-offset: 2px;
+}
+
+.ct-card__overlay:disabled { cursor: not-allowed; }
+
+/* Nút chi tiết & nút thêm phải nằm trên lớp phủ */
+.ct-card__info {
+  position: absolute;
+  top: var(--s-2);
+  right: var(--s-2);
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  color: var(--ink-soft);
+  opacity: 0;
+  z-index: 2;
+  transition: opacity var(--t-fast) var(--ease-out), background-color var(--t-fast) var(--ease-out);
+}
+
+.ct-card:hover .ct-card__info,
+.ct-card__info:focus-visible { opacity: 1; }
+
+.ct-card__info:hover { background: var(--surface); }
+
+.ct-card__add { z-index: 2; }
+
+/* Chỉ dùng cho lưới: mỗi ô là một listitem bọc thẻ */
+.co-cell { display: flex; min-width: 0; }
+.co-cell > .ct-card { width: 100%; }
+
+/* Cắt hiệu ứng nhấc thẻ khi người dùng chọn giảm chuyển động */
+@media (prefers-reduced-motion: reduce) {
+  .ct-card:hover { transform: none; }
+  .ct-card:hover .ct-card__img { transform: none; }
+  .ct-card__add:hover:not(:disabled) { transform: none; }
+}
+
+/* ============================================================
+   Lưới danh mục
+   ============================================================ */
+.ct-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: var(--s-3);
+  align-content: start;
+}
+
+.ct-grid.is-empty { display: block; }
+
+@media (max-width: 1240px) {
+  .ct-grid { grid-template-columns: repeat(auto-fill, minmax(178px, 1fr)); }
+}
+
+@media (max-width: 720px) {
+  .ct-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--s-2); }
+  .ct-card__price { font-size: var(--fs-base); }
+  .ct-card__prices { padding-right: 56px; }
+}
+
+@media (max-width: 460px) {
+  .ct-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ct-card__name { font-size: var(--fs-sm); }
+}

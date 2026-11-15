@@ -1,0 +1,362 @@
+/* ==========================================================================
+   SmartMart · Đăng nhập (lg-)
+   Bổ sung cho khung .auth trong layout.css: thương hiệu, ô nhập, tài khoản thử.
+   Mọi màu đều lấy từ tokens.css.
+   ========================================================================== */
+
+.lg-view {
+  position: relative;
+}
+
+/* ============================================================
+   Cột trái — thương hiệu
+   ============================================================ */
+.lg-aside__top {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.lg-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  align-self: flex-start;
+  padding: 6px 14px 6px 6px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .1);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.lg-mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  border-radius: var(--r-md);
+  background: linear-gradient(140deg, var(--brand-400), var(--brand-600));
+  color: var(--on-brand);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .28), inset 0 1px 0 rgba(255, 255, 255, .24);
+}
+
+.lg-mark svg { width: 22px; height: 22px; }
+
+.lg-mark--compact {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-brand);
+}
+
+.lg-mark--compact svg { width: 17px; height: 17px; }
+
+.lg-brand__word {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.12;
+}
+
+.lg-brand__word strong {
+  /* Không đặt màu: kế thừa màu chữ trắng của .auth__aside để chỉ có một nơi
+     quyết định màu trên nền tối. */
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  color: inherit;
+}
+
+.lg-brand__word span {
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(214, 236, 220, .6);
+}
+
+/* Dải nhỏ ở đáy cột trái */
+.lg-aside__strip {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--s-2);
+  padding: 7px 14px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .08);
+  color: rgba(206, 232, 214, .72);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+.lg-aside__strip::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime-500);
+  box-shadow: 0 0 0 3px rgba(182, 224, 74, .18);
+  flex: 0 0 auto;
+}
+
+/* Cột trái có sẵn .auth__feature — chỉ chỉnh nhịp cho khớp đề bài */
+.lg-aside .auth__feature {
+  transition: background-color var(--t-base) var(--ease-out),
+              border-color var(--t-base) var(--ease-out),
+              transform var(--t-base) var(--ease-out);
+}
+
+.lg-aside .auth__feature:hover {
+  background: rgba(255, 255, 255, .1);
+  border-color: rgba(255, 255, 255, .14);
+  transform: translateX(3px);
+}
+
+.lg-aside .auth__features { margin-top: var(--s-6); }
+
+/* ============================================================
+   Cột phải — thẻ đăng nhập
+   ============================================================ */
+.lg-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-6);
+}
+
+.lg-card-top__note {
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
+.lg-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.lg-field { gap: 7px; }
+
+.lg-field .field__label {
+  font-size: var(--fs-sm);
+  letter-spacing: .005em;
+}
+
+/* Ô nhập có nút phụ bên trong (hiện/ẩn mật khẩu) */
+.lg-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lg-input-wrap .input {
+  height: 48px;
+  padding-right: 48px;
+  font-size: var(--fs-md);
+  border-radius: var(--r-lg);
+}
+
+.lg-input-wrap .input:focus {
+  box-shadow: 0 0 0 4px var(--brand-50), var(--shadow-xs);
+}
+
+.lg-reveal {
+  position: absolute;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--muted);
+  transition: background-color var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out);
+}
+
+.lg-reveal:hover { background: var(--surface-3); color: var(--ink); }
+.lg-reveal:active { transform: scale(.94); }
+.lg-reveal svg { width: 17px; height: 17px; }
+
+/* Ô báo lỗi: chỉ chiếm chỗ khi có nội dung */
+.lg-error {
+  display: none;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--coral-100);
+  background: var(--coral-100);
+  color: var(--coral-600);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  line-height: var(--lh-snug);
+  animation: sm-fade-down var(--t-base) var(--ease-out) both;
+}
+
+.lg-error.is-shown { display: flex; }
+
+.lg-error::before {
+  content: "!";
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: var(--coral-500);
+  color: var(--on-brand);
+  font-size: var(--fs-2xs);
+  font-weight: 900;
+  line-height: 1;
+}
+
+/* Nút đăng nhập */
+.lg-submit {
+  margin-top: var(--s-1);
+  height: 50px;
+  font-size: var(--fs-md);
+  font-weight: 700;
+  letter-spacing: -.005em;
+  gap: var(--s-2);
+}
+
+.lg-submit svg { transition: transform var(--t-base) var(--ease-out); }
+.lg-submit:hover:not(:disabled) svg { transform: translateX(3px); }
+.lg-submit:disabled { opacity: .82; cursor: progress; }
+
+/* ============================================================
+   Tài khoản dùng thử
+   ============================================================ */
+.lg-demo {
+  margin-top: var(--s-6);
+  padding: var(--s-4);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--surface-2);
+}
+
+.lg-demo__title {
+  margin-bottom: var(--s-2);
+  font-size: var(--fs-2xs);
+  font-weight: 800;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+}
+
+.lg-demo__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lg-demo__row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: var(--fs-sm);
+  text-align: left;
+  transition: background-color var(--t-fast) var(--ease-out),
+              color var(--t-fast) var(--ease-out),
+              transform var(--t-fast) var(--ease-out);
+}
+
+.lg-demo__row:hover {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-xs);
+}
+
+.lg-demo__row:active { transform: scale(.99); }
+
+.lg-demo__role {
+  min-width: 82px;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+
+.lg-demo__cred {
+  flex: 1 1 auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  letter-spacing: -.01em;
+}
+
+.lg-demo__row svg {
+  flex: 0 0 auto;
+  color: var(--brand-500);
+  opacity: 0;
+  transform: translateX(-3px);
+  transition: opacity var(--t-fast) var(--ease-out), transform var(--t-fast) var(--ease-out);
+}
+
+.lg-demo__row:hover svg,
+.lg-demo__row:focus-visible svg { opacity: 1; transform: none; }
+
+/* ============================================================
+   Dòng ghi chú cuối thẻ
+   ============================================================ */
+.lg-footnote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  color: var(--muted-2);
+  font-size: var(--fs-xs);
+}
+
+.lg-footnote svg { flex: 0 0 auto; opacity: .8; }
+
+/* ============================================================
+   Điểm ngắt màn hình
+   ============================================================ */
+@media (max-width: 1080px) {
+  .lg-aside__strip { font-size: var(--fs-2xs); }
+}
+
+@media (max-width: 900px) {
+  /* Cột trái bị ẩn ở layout.css — thẻ đăng nhập phải tự đứng vững. */
+  .auth__card { max-width: 420px; }
+  .lg-card-top { margin-bottom: var(--s-5); }
+  .lg-footnote { margin-top: var(--s-5); }
+}
+
+@media (max-width: 480px) {
+  .auth__title { font-size: var(--fs-2xl); }
+  .lg-input-wrap .input { height: 46px; font-size: var(--fs-base); }
+  .lg-submit { height: 48px; }
+  .lg-demo { padding: var(--s-3); }
+  .lg-demo__role { min-width: 68px; }
+  .lg-demo__cred { font-size: var(--fs-2xs); }
+}
+
+/* Tông tối: viền nét đứt và nền khối thử cần tương phản hơn một chút */
+:root[data-theme="dark"] .lg-demo { background: var(--surface); }
+:root[data-theme="dark"] .lg-error {
+  border-color: transparent;
+  background: var(--coral-100);
+  color: var(--coral-500);
+}
