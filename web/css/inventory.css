@@ -1,0 +1,295 @@
+/* ==========================================================================
+   SmartMart · Kho hàng
+   Tiền tố .iv- ; mọi màu lấy từ tokens.css.
+   ========================================================================== */
+
+/* ============================================================
+   Thanh công cụ: tìm kiếm + lọc
+   ============================================================ */
+.iv-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  margin-bottom: var(--s-4);
+  flex-wrap: wrap;
+}
+
+.iv-toolbar__search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 260px;
+  min-width: 200px;
+}
+
+.iv-toolbar__search svg {
+  position: absolute;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.iv-toolbar__search .input {
+  height: 40px;
+  padding-left: 36px;
+  border-radius: var(--r-md);
+}
+
+.iv-toolbar__check {
+  flex: 0 0 auto;
+  height: 40px;
+  white-space: nowrap;
+}
+
+.iv-toolbar .select {
+  flex: 0 0 190px;
+  height: 40px;
+}
+
+/* ============================================================
+   Bảng mặt hàng
+   ============================================================ */
+.iv-card {
+  margin-bottom: var(--s-6);
+  overflow: hidden;
+}
+
+.iv-table-wrap {
+  border: 0;
+  border-radius: 0;
+  max-width: 100%;
+}
+
+.iv-table {
+  /* Giữ bảng đủ rộng để không bị bóp méo; màn hình hẹp thì cuộn ngang. */
+  min-width: 860px;
+}
+
+.iv-table tbody tr {
+  cursor: pointer;
+}
+
+.iv-table tbody tr:focus-visible {
+  outline: 2.5px solid var(--brand-500);
+  outline-offset: -3px;
+}
+
+.iv-cell-code .mono {
+  font-size: var(--fs-sm);
+  color: var(--ink-soft);
+  letter-spacing: .03em;
+}
+
+/* --- Ô sản phẩm: ảnh nhỏ 32px + tên + thông tin phụ --- */
+.iv-product {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-width: 0;
+}
+
+.iv-thumb {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  border-radius: var(--r-sm);
+  background: var(--surface-3);
+  overflow: hidden;
+}
+
+.iv-thumb img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  display: block;
+}
+
+.iv-thumb--empty {
+  color: var(--muted-2);
+}
+
+.iv-product__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.iv-product__name {
+  font-weight: 650;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 34ch;
+}
+
+.iv-product__sub {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+/* --- Thanh tồn kho trong bảng --- */
+.iv-table .stock-bar {
+  min-width: 120px;
+}
+
+.iv-table .stock-bar__value {
+  min-width: 40px;
+}
+
+/* Thanh hành động của dòng đang chọn */
+.iv-selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-2) var(--s-4);
+  background: var(--brand-50);
+  border-bottom: 1px solid var(--brand-100);
+  flex-wrap: wrap;
+  animation: sm-fade-down var(--t-base) var(--ease-out) both;
+}
+
+.iv-selection[hidden] {
+  display: none;
+}
+
+.iv-selection__label {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--brand-700);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 42ch;
+}
+
+.iv-selection__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+
+.iv-hint {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Hộp thoại chi tiết mặt hàng
+   ============================================================ */
+.iv-detail {
+  display: grid;
+  gap: 0;
+}
+
+.iv-detail__row {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: var(--s-3);
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.iv-detail__row:last-child {
+  border-bottom: 0;
+}
+
+.iv-detail dt {
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  color: var(--muted);
+}
+
+.iv-detail dd {
+  margin: 0;
+  font-size: var(--fs-base);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* ============================================================
+   Biểu mẫu thêm mặt hàng
+   ============================================================ */
+.iv-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+
+.iv-form__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: var(--s-4);
+}
+
+.iv-form__hint {
+  margin-top: calc(var(--s-2) * -1);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  line-height: var(--lh-snug);
+}
+
+.iv-form .field__error {
+  display: flex;
+}
+
+/* Trường hạn dùng / bảo hành bị ẩn khi chọn loại hàng khác. */
+.iv-form .field[hidden] {
+  display: none;
+}
+
+/* ============================================================
+   Điểm ngắt màn hình
+   ============================================================ */
+@media (max-width: 900px) {
+  .iv-toolbar .select {
+    flex: 1 1 160px;
+  }
+
+  .iv-product__name {
+    max-width: 24ch;
+  }
+}
+
+@media (max-width: 640px) {
+  .iv-toolbar {
+    align-items: stretch;
+  }
+
+  .iv-toolbar__search {
+    flex: 1 1 100%;
+  }
+
+  .iv-toolbar__check,
+  .iv-toolbar .select {
+    flex: 1 1 100%;
+    height: auto;
+  }
+
+  .iv-toolbar .select {
+    height: 40px;
+  }
+
+  .iv-selection {
+    align-items: flex-start;
+  }
+
+  .iv-selection__actions .btn {
+    flex: 1 1 auto;
+  }
+
+  .iv-detail__row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}

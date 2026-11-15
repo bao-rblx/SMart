@@ -1,0 +1,393 @@
+/* ==========================================================================
+   SmartMart · Doanh thu + biểu đồ
+   Tiền tố: .rp- (màn hình doanh thu) và .chart- (bộ biểu đồ dùng chung).
+   Mọi màu đều lấy từ tokens.css — không có mã màu trực tiếp ở đây.
+   ========================================================================== */
+
+/* ============================================================
+   Thanh lọc thời gian
+   ============================================================ */
+.rp-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-5);
+  flex-wrap: wrap;
+}
+
+.rp-range {
+  max-width: 420px;
+  width: 100%;
+}
+
+/* Chữ gợi ý nhỏ trong đầu thẻ — "Đơn vị: đồng", "12 đơn · Hôm nay…" */
+.rp-hint {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   Lưới biểu đồ: cột bên trái rộng, vành khuyên bên phải
+   ============================================================ */
+.rp-charts {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr);
+  gap: var(--s-5);
+  margin-bottom: var(--s-5);
+  min-width: 0;
+}
+
+.rp-chart-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rp-chart-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: var(--s-4) var(--s-5);
+  /* Biểu đồ co giãn theo bề rộng thẻ, không tràn ngang. */
+  overflow: hidden;
+}
+
+.rp-empty-card {
+  grid-column: 1 / -1;
+}
+
+/* Xu hướng 7 ngày trải hết bề ngang — đường dài mới thấy rõ nhịp lên xuống. */
+.rp-trend-card {
+  grid-column: 1 / -1;
+}
+
+.rp-trend-card .rp-chart-body {
+  padding: var(--s-3) var(--s-5) var(--s-4);
+}
+
+/* ============================================================
+   Bảng hóa đơn
+   ============================================================ */
+.rp-table-card {
+  margin-bottom: var(--s-6);
+  overflow: hidden;
+}
+
+.rp-table-wrap {
+  border: 0;
+  border-radius: 0;
+  max-width: 100%;
+}
+
+.rp-table {
+  min-width: 660px;
+}
+
+.rp-table tbody tr {
+  cursor: pointer;
+}
+
+.rp-table tbody tr:focus-visible {
+  outline: 2.5px solid var(--brand-500);
+  outline-offset: -3px;
+}
+
+.rp-cell-code .mono {
+  font-size: var(--fs-sm);
+  letter-spacing: .04em;
+  color: var(--ink-soft);
+}
+
+.rp-cell-time {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.rp-cell-total {
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* Thanh hành động của dòng đang chọn */
+.rp-selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-2) var(--s-4);
+  background: var(--brand-50);
+  border-bottom: 1px solid var(--brand-100);
+  flex-wrap: wrap;
+  animation: sm-fade-down var(--t-base) var(--ease-out) both;
+}
+
+.rp-selection[hidden] {
+  display: none;
+}
+
+.rp-selection__label {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--brand-700);
+  letter-spacing: .03em;
+}
+
+.rp-selection__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   Hóa đơn dạng văn bản trong hộp thoại
+   ============================================================ */
+.rp-invoice {
+  margin: 0;
+  padding: var(--s-4);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  white-space: pre;
+  overflow-x: auto;
+  tab-size: 2;
+}
+
+/* ============================================================
+   BIỂU ĐỒ — dùng chung cho mọi màn hình
+   ============================================================ */
+.chart-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  overflow: visible;
+}
+
+.chart-svg--bar {
+  /* Tỉ lệ khung nhìn do module charts.js đặt; ở đây chỉ chặn chiều cao. */
+  max-height: 420px;
+}
+
+.chart-svg--donut {
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.chart-svg--spark {
+  max-height: 56px;
+}
+
+/* --- Lưới và trục --- */
+.chart-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  fill: none;
+}
+
+.chart-axis-line {
+  stroke: var(--line-strong);
+  stroke-width: 1.2;
+  fill: none;
+}
+
+.chart-axis-label {
+  fill: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-x-label {
+  fill: var(--ink-soft);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+/* --- Cột --- */
+.chart-bar {
+  transition: opacity var(--t-fast) var(--ease-out), filter var(--t-fast) var(--ease-out);
+  cursor: default;
+}
+
+.chart-bar:hover {
+  opacity: .82;
+  filter: saturate(118%);
+}
+
+.chart-value-label {
+  fill: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+/* --- Vành khuyên --- */
+.chart-donut__segment {
+  transition: stroke-width var(--t-base) var(--ease-out), opacity var(--t-fast) var(--ease-out);
+  cursor: default;
+}
+
+.chart-donut__segment:hover {
+  opacity: .84;
+}
+
+.chart-donut__label {
+  fill: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.chart-donut__value {
+  fill: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+
+/* --- Chú giải --- */
+.chart-legend__swatch {
+  transition: opacity var(--t-fast) var(--ease-out);
+}
+
+.chart-legend__label {
+  fill: var(--ink-soft);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.chart-legend__value {
+  fill: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Sparkline --- */
+.chart-spark__area {
+  opacity: .55;
+}
+
+.chart-spark__line {
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart-spark__dot {
+  stroke: var(--surface);
+  stroke-width: 1.4;
+}
+
+/* --- Khối rỗng thay cho biểu đồ --- */
+.chart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  width: 100%;
+  min-height: 168px;
+  padding: var(--s-6) var(--s-4);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  text-align: center;
+}
+
+.chart-empty__icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: var(--r-md);
+  background: var(--surface-3);
+  color: var(--muted);
+}
+
+.chart-empty__text {
+  max-width: 34ch;
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  line-height: var(--lh-snug);
+}
+
+/* ============================================================
+   Điểm ngắt màn hình
+   ============================================================ */
+@media (max-width: 1080px) {
+  .rp-charts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rp-chart-body {
+    padding: var(--s-3) var(--s-4);
+  }
+}
+
+@media (max-width: 640px) {
+  .rp-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .rp-range {
+    max-width: none;
+  }
+
+  .rp-selection {
+    align-items: flex-start;
+  }
+
+  .rp-selection__actions {
+    width: 100%;
+  }
+
+  .rp-selection__actions .btn {
+    flex: 1 1 auto;
+  }
+
+  .rp-chart-body {
+    padding: var(--s-2) var(--s-3);
+  }
+
+  .chart-svg--donut {
+    max-width: 100%;
+  }
+
+  .rp-invoice {
+    font-size: var(--fs-xs);
+  }
+}
+
+/* Khi in, chỉ giữ nội dung — không in khung quản trị. */
+@media print {
+  .rp-toolbar,
+  .rp-selection,
+  .page-head__actions {
+    display: none !important;
+  }
+
+  .rp-chart-card {
+    break-inside: avoid;
+  }
+}
