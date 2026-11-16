@@ -8,8 +8,12 @@ internal class WorkspaceDialog : Form
     protected readonly Panel Body=new() { Dock=DockStyle.Fill,Padding=new Padding(28) };
     public WorkspaceDialog(string title,int height=380,int width=480)
     {
-        Text="SmartMart · "+title;ClientSize=new Size(width,height);FormBorderStyle=FormBorderStyle.FixedDialog;
-        StartPosition=FormStartPosition.CenterParent;MaximizeBox=false;MinimizeBox=false;BackColor=Design.Background;Font=Design.Font();AutoScaleMode=AutoScaleMode.Dpi;
+        Text="SmartMart · "+title;
+        var area=Screen.PrimaryScreen?.WorkingArea??new Rectangle(0,0,1920,1080);
+        int maxHeight=area.Height-60;
+        if(height>maxHeight) { height=maxHeight;Body.AutoScroll=true; }
+        ClientSize=new Size(width,height);FormBorderStyle=FormBorderStyle.FixedDialog;
+        StartPosition=FormStartPosition.CenterParent;MaximizeBox=false;MinimizeBox=false;BackColor=Design.Background;Font=Design.Font();AutoScaleMode=AutoScaleMode.None;
         Controls.Add(Body);
         var heading=Design.Label(title,22,Design.Ink,FontStyle.Bold);heading.SetBounds(28,24,width-56,43);Body.Controls.Add(heading);
     }

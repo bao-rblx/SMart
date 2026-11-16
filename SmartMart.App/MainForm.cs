@@ -18,8 +18,12 @@ public sealed partial class MainForm : Form
     public MainForm(StoreSession store,User user)
     {
         this.store=store;this.user=user;Text="SmartMart · Quản lý cửa hàng";
-        ClientSize=new Size(1440,900);MinimumSize=new Size(1200,790);StartPosition=FormStartPosition.CenterScreen;
-        BackColor=Design.Background;Font=Design.Font();AutoScaleMode=AutoScaleMode.Dpi;KeyPreview=true;
+        var workingArea=Screen.PrimaryScreen?.WorkingArea??new Rectangle(0,0,1440,900);
+        int targetW=Math.Clamp(workingArea.Width-40,1024,1440);
+        int targetH=Math.Clamp(workingArea.Height-40,640,880);
+        ClientSize=new Size(targetW,targetH);MinimumSize=new Size(1024,640);StartPosition=FormStartPosition.CenterScreen;
+        if(workingArea.Width<=1366||workingArea.Height<=768)WindowState=FormWindowState.Maximized;
+        BackColor=Design.Background;Font=Design.Font();AutoScaleMode=AutoScaleMode.None;KeyPreview=true;
         var shell=new TableLayoutPanel { Dock=DockStyle.Fill,ColumnCount=2,RowCount=1,Margin=Padding.Empty };
         shell.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute,208));shell.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,100));
         shell.Controls.Add(BuildNavigation(),0,0);
@@ -51,11 +55,11 @@ public sealed partial class MainForm : Form
             var button=Design.Button(title,()=>Navigate(screen));button.SetBounds(15,y,178,48);button.CustomText=Color.FromArgb(185,204,188);button.CustomFill=rail.BackColor;
             navigation[screen]=button;rail.Controls.Add(button);y+=58;
         }
-        var bottom=new Panel { Dock=DockStyle.Bottom,Height=210 };
-        var note=Design.Label("CHĂM CHÚT TỪNG NGÀY\nGọn việc bán. Trọn niềm vui.",8,Color.FromArgb(148,176,156));note.SetBounds(9,8,170,50);
-        var name=Design.Label(user.Username,12,Color.White,FontStyle.Bold);name.SetBounds(12,80,160,30);
-        var role=Design.Label(user.Role.Label(),9,Color.FromArgb(180,204,166));role.SetBounds(12,110,160,24);
-        var exit=Design.Button("Đăng xuất  ↗",()=> { SignedOut=true;Close(); });exit.SetBounds(4,153,173,38);exit.CustomFill=Color.FromArgb(37,70,57);exit.CustomText=Color.FromArgb(208,223,202);
+        var bottom=new Panel { Dock=DockStyle.Bottom,Height=180 };
+        var note=Design.Label("CHĂM CHÚT TỪNG NGÀY\nGọn việc bán. Trọn niềm vui.",8,Color.FromArgb(148,176,156));note.SetBounds(9,4,170,42);
+        var name=Design.Label(user.Username,12,Color.White,FontStyle.Bold);name.SetBounds(12,52,160,26);
+        var role=Design.Label(user.Role.Label(),9,Color.FromArgb(180,204,166));role.SetBounds(12,80,160,22);
+        var exit=Design.Button("Đăng xuất  ↗",()=> { SignedOut=true;Close(); });exit.SetBounds(4,120,173,38);exit.CustomFill=Color.FromArgb(37,70,57);exit.CustomText=Color.FromArgb(208,223,202);
         bottom.Controls.AddRange([note,name,role,exit]);rail.Controls.Add(bottom);return rail;
     }
     private void Navigate(string screen)

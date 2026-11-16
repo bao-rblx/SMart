@@ -11,8 +11,8 @@ public sealed class LoginForm : Form
     public LoginForm(StoreSession store)
     {
         this.store=store; Text="SmartMart · Xin chào bạn"; ClientSize=new Size(1040,680);
-        MinimumSize=new Size(1000,700); StartPosition=FormStartPosition.CenterScreen;
-        BackColor=Design.Background; Font=Design.Font(); AutoScaleMode=AutoScaleMode.Dpi;
+        MinimumSize=new Size(960,640); StartPosition=FormStartPosition.CenterScreen;
+        BackColor=Design.Background; Font=Design.Font(); AutoScaleMode=AutoScaleMode.None;
         var layout=new TableLayoutPanel { Dock=DockStyle.Fill,ColumnCount=2,RowCount=1 };
         layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,46));layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent,54));
         var brand=new Panel { Dock=DockStyle.Fill,BackColor=Design.Rail,Padding=new Padding(42) };
@@ -24,7 +24,7 @@ public sealed class LoginForm : Form
         var a=Design.Label("Một nơi, gọn mọi việc.",12,Color.White,FontStyle.Bold);a.SetBounds(20,15,340,30);
         var b=Design.Label("Bán nhanh  /  Kho gọn  /  Thu chi rõ",9,Color.FromArgb(193,211,183));b.SetBounds(20,50,350,30);accent.Controls.AddRange([a,b]);
         brand.Controls.AddRange([wordmark,edition,headline,detail,accent]);
-        var right=new Panel { Dock=DockStyle.Fill,Padding=new Padding(54,72,54,32) };
+        var right=new Panel { Dock=DockStyle.Fill,Padding=new Padding(54,56,54,28) };
         var fields=new TableLayoutPanel { Dock=DockStyle.Top,ColumnCount=1,RowCount=11,Height=510 };
         foreach(int h in new[]{34,58,42,30,50,26,30,50,42,52,76})fields.RowStyles.Add(new RowStyle(SizeType.Absolute,h));
         var eyebrow=Design.Label("CỬA HÀNG CỦA BẠN, NHỊP SỐNG CỦA BẠN",9,Design.Accent,FontStyle.Bold);eyebrow.Dock=DockStyle.Fill;fields.Controls.Add(eyebrow,0,0);

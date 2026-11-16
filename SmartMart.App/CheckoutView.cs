@@ -58,7 +58,9 @@ public sealed partial class MainForm
         {
             searchBox.Width=top.ClientSize.Width;filters.Width=top.ClientSize.Width;options.Width=top.ClientSize.Width;
             filters.Height=filters.Controls.Cast<Control>().Sum(x=>x.Width+x.Margin.Horizontal)>filters.Width?76:38;
-            options.Top=filters.Bottom+2;top.Height=options.Bottom+6;
+            options.Top=filters.Bottom+2;
+            int targetH=options.Bottom+6;
+            if(top.Height!=targetH)top.Height=targetH;
         };
         var pager=new Panel { Dock=DockStyle.Bottom,Height=44 };
         pageInfo=Design.Label("",9,Design.Muted);pageInfo.SetBounds(0,7,240,30);
